@@ -2,8 +2,8 @@ import Config
 
 # Configure your database
 config :real_deal_api, RealDealApi.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "draco",
+  password: "draco",
   hostname: "localhost",
   database: "real_deal_api_dev",
   stacktrace: true,
