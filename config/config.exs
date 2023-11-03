@@ -34,6 +34,12 @@ secret_key: "8qbqh0p09vCU85sJz7byuF4Dagm335KRx0xpk+9TGgxQo+wXCQBljzotlHZVqR66"
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Config GuardianDB
+config :guardian, Guardian.DB,
+  repo: RealDealApi.Repo,
+  schema_name: "guardian_tokens",
+  sweep_interval: 60
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

@@ -2,6 +2,8 @@ defmodule RealDealApiWeb.Auth.Guardian do
   use Guardian, otp_app: :real_deal_api
   alias RealDealApi.Accounts
 
+
+#---------------------------------------GENERATE SUBJECT IDENTIFIER------------------------------------#
   def subject_for_token(%{id: id}, _claims) do
     sub = to_string(id)
     {:ok, sub}
@@ -11,6 +13,8 @@ defmodule RealDealApiWeb.Auth.Guardian do
     {:error, :no_id_provided}
   end
 
+
+#-----------------------------------------------RETRIEVE USER-----------------------------------------#
   def resource_from_claims(%{"sub" => id}) do
     case Accounts.get_account!(id) do
       nil -> {:error, :not_found}
@@ -22,19 +26,47 @@ defmodule RealDealApiWeb.Auth.Guardian do
     {:error, :no_id_provided}
   end
 
+#---------------------------------------------AUTHENTICATE USER-----------------------------------------#
   def authenticate(email, password) do
     case Accounts.get_account_by_email(email) do
       nil -> {:error, :unauthorized}
       account -> if password == account.hash_password do
         create_token(account)
       else
-        {:error, "Invalid password"}
+        {:error, :unauthorized}
       end
     end
   end
 
+#------------------------------------------------CREATE TOKEN------------------------------------------#
   defp create_token(account) do
     {:ok, token, _claims} = encode_and_sign(account)
     {:ok, account, token}
   end
+
+  #-----------------------------------------SEND TOKEN TO GUARDIAN DB----------------------------------#
+  def after_encode_and_sign(resource, claims, token, _options) do
+    with {:ok, _} <- Guardian.DB.after_encode_and_sign(resource, claims["typ"], claims, token) do
+      {:ok, token}
+    end
+  end
+
+  def on_verify(claims, token, _options) do
+    with {:ok, _} <- Guardian.DB.on_verify(claims, token) do
+      {:ok, claims}
+    end
+  end
+
+  def on_refresh({old_token, old_claims}, {new_token, new_claims}, _options) do
+    with {:ok, _, _} <- Guardian.DB.on_refresh({old_token, old_claims}, {new_token, new_claims}) do
+      {:ok, {old_token, old_claims}, {new_token, new_claims}}
+    end
+  end
+
+  def on_revoke(claims, token, _options) do
+    with {:ok, _} <- Guardian.DB.on_revoke(claims, token) do
+      {:ok, claims}
+    end
+  end
+
 end
