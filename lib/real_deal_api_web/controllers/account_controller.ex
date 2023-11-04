@@ -85,6 +85,7 @@ end
     end
   end
 
+#---------------------------------------------DELETE ACCOUNT------------------------------------------#
   def delete(conn, %{"id" => id}) do
     account = Accounts.get_account!(id)
 

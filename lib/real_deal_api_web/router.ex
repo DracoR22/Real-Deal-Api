@@ -27,8 +27,12 @@ defmodule RealDealApiWeb.Router do
   scope "/api", RealDealApiWeb do
     pipe_through :api
     get "/", DefaultController, :index
+    get "/posts/show_all", PostController, :show_all
+    get "/comments/show_all", CommentController, :index
+    get "/comments/show/:id", CommentController, :show
     post "/accounts/create", AccountController, :create
     post "/accounts/sign_in", AccountController, :sign_in
+    post "/posts/create", PostController, :create
   end
 
   #--------------------------------------------PROTECTED ROUTES----------------------------------------#
@@ -38,7 +42,9 @@ defmodule RealDealApiWeb.Router do
     get "/accounts/sign_out", AccountController, :sign_out
     get "/accounts/refresh_session", AccountController, :refresh_session
     post "/accounts/update", AccountController, :update
+    post "/comments/create", CommentController, :create
     put "/users/update", UserController, :update
-    # delete "/accounts/delete/:id", AccountController, :delete
+    put "/comments/update/:id", CommentController, :update
+    delete "/accounts/delete", AccountController, :delete
   end
 end

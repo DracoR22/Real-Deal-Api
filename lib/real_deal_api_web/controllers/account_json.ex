@@ -1,6 +1,6 @@
 defmodule RealDealApiWeb.AccountJSON do
   alias RealDealApi.Accounts.Account
-  alias RealDealApiWeb.UserJSON
+  alias RealDealApiWeb.{UserJSON, CommentJSON}
 
   @doc """
   Renders a list of accounts.
@@ -31,7 +31,8 @@ defmodule RealDealApiWeb.AccountJSON do
     %{
       id: account.id,
       email: account.email,
-      user: UserJSON.data(account.user)
+      user: UserJSON.data(account.user),
+      comments: CommentJSON.index(%{comment: account.comments})
     }
   end
 

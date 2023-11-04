@@ -10,8 +10,8 @@ defmodule RealDealApi.Accounts.Account do
     field :hash_password, :string
     # Confirm The Relation
     has_one :user, RealDealApi.Users.User
-
-    timestamps()
+    has_many :comments, RealDealApi.Comments.Comment
+    timestamps(type: :utc_datetime)
   end
 
   # GET ALL FIELDS

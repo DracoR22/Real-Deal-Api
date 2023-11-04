@@ -38,11 +38,11 @@ defmodule RealDealApi.Accounts do
 #--------------------------------------------GET ACCOUNT WITH PARAMS--------------------------------------#
   def get_account!(id), do: Repo.get!(Account, id)
 
-#-----------------------------------------GET FULL ACCOUNT WITH PARAMS------------------------------------#
+#----------------------------------------------GET FULL ACCOUNT-------------------------------------------#
   def get_full_account(id) do
     Account
     |> where(id: ^id)
-    |> preload([:user])
+    |> preload([:user, :comments])
     |> Repo.one()
   end
 
