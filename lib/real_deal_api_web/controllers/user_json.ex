@@ -11,11 +11,13 @@ defmodule RealDealApiWeb.UserJSON do
   @doc """
   Renders a single user.
   """
+
+   #--------------------------------------------USER DATA JSON---------------------------------------#
   def show(%{user: user}) do
     %{data: data(user)}
   end
 
-  defp data(%User{} = user) do
+  def data(%User{} = user) do
     %{
       id: user.id,
       name: user.name,

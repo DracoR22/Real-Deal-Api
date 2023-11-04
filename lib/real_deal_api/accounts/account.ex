@@ -2,6 +2,7 @@ defmodule RealDealApi.Accounts.Account do
   use Ecto.Schema
   import Ecto.Changeset
 
+  # @optional_fields [:id, :inserted_at, :updated_at]
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "accounts" do
@@ -10,8 +11,13 @@ defmodule RealDealApi.Accounts.Account do
     # Confirm The Relation
     has_one :user, RealDealApi.Users.User
 
-    timestamps(type: :utc_datetime)
+    timestamps()
   end
+
+  # GET ALL FIELDS
+  # defp all_fields do
+  #   __MODULE__.__schema__(:fields)
+  # end
 
   @doc false
   def changeset(account, attrs) do

@@ -35,7 +35,16 @@ defmodule RealDealApi.Accounts do
       ** (Ecto.NoResultsError)
 
   """
+#--------------------------------------------GET ACCOUNT WITH PARAMS--------------------------------------#
   def get_account!(id), do: Repo.get!(Account, id)
+
+#-----------------------------------------GET FULL ACCOUNT WITH PARAMS------------------------------------#
+  def get_full_account(id) do
+    Account
+    |> where(id: ^id)
+    |> preload([:user])
+    |> Repo.one()
+  end
 
   @doc """
   Gets a single account.any()
